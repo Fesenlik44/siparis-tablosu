@@ -18,7 +18,10 @@
   </table>
 
   <script>
-    fetch("https://script.google.com/macros/s/AKfycbzT8U5MHI9eTEPHQ1DDhXUlwDToj3WObde_Z2eWRnt1/dev") // 👈 Apps Script Web App URL'ni buraya yapıştır
+    const proxy = "https://corsproxy.io/?";
+    const url = "https://script.google.com/macros/s/AKfycbzT8U5MHI9eTEPHQ1DDhXUlwDToj3WObde_Z2eWRnt1/dev";
+
+    fetch(proxy + encodeURIComponent(url))
       .then(res => res.json())
       .then(data => {
         const thead = document.querySelector("#veriTablosu thead");
@@ -44,7 +47,7 @@
         });
       })
       .catch(err => {
-        document.body.innerHTML = "<p>Veri alınırken hata oluştu 😕</p>";
+        document.body.innerHTML = "<p>Veri alınamadı 😕</p>";
         console.error(err);
       });
   </script>
