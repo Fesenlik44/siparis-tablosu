@@ -2,6 +2,7 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Google Sheets Sipariş Tablosu</title>
 </head>
 <body>
@@ -14,34 +15,38 @@
   <button onclick="veriEkle()">Ekle</button>
 
   <script>
-    // Doğrudan çalışan CORS uyumlu URL
+    // 🔁 BU URL'Yİ KENDİ "Googleusercontent" URL'İNLE DEĞİŞTİR
     const sheetURL = "https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLi6RuSFvs2Dp9226h3xvmvcwVzgc_y3PvHKkQedfnx1d9upqSLHKgC-SZ6LNFn0JMH1XeCTGu2N_L0g6YwC-Wn_wg-YR-cfzAl-Lru8fzSMzesf2Jew9K2r14OcbhPvXyW34Okh6EhKyXFs6xUjMvL6iJzBAxfCqIGKxwl1lQtLt1E-trQqjsH93SyUyTTncmjMNmMcWZpACF9q8oMTE-U--Tz8kKc9dxypc-6SbBl0t_e5-CIqfLFw1F7zxQ&lib=MQdXRmybjNn85eiRHlLTQcQEa5a_kG2hH";
 
-    // Verileri listele
-    fetch(sheetURL)
-      .then(res => res.json())
-      .then(data => {
-        const liste = document.getElementById('liste');
-        if (data.length === 0) {
-          liste.innerHTML = "<p>Veri bulunamadı.</p>";
-          return;
-        }
+    // 📥 Verileri listele
+    function listele() {
+      fetch(sheetURL)
+        .then(res => res.json())
+        .then(data => {
+          const liste = document.getElementById('liste');
+          liste.innerHTML = ""; // Önce temizle
+          if (data.length === 0) {
+            liste.innerHTML = "<p>Veri bulunamadı.</p>";
+            return;
+          }
 
-        data.slice(1).forEach(row => {
-          const satir = document.createElement('p');
-          satir.textContent = row.join(" | ");
-          liste.appendChild(satir);
+          // Başlık satırını atla (ilk satır)
+          data.slice(1).forEach(row => {
+            const satir = document.createElement('p');
+            satir.textContent = row.join(" | ");
+            liste.appendChild(satir);
+          });
+        })
+        .catch(err => {
+          console.error("Hata:", err);
+          document.getElementById('liste').innerHTML = "<p>Veri alınamadı.</p>";
         });
-      })
-      .catch(err => {
-        console.error("Hata:", err);
-        document.getElementById('liste').innerHTML = "<p>Veri alınamadı.</p>";
-      });
+    }
 
-    // Yeni veri ekle
+    // ➕ Yeni veri ekle
     function veriEkle() {
-      const isim = document.getElementById('isim').value;
-      const email = document.getElementById('email').value;
+      const isim = document.getElementById('isim').value.trim();
+      const email = document.getElementById('email').value.trim();
 
       if (!isim || !email) {
         alert("Lütfen tüm alanları doldurun.");
@@ -55,14 +60,17 @@
       })
       .then(res => res.text())
       .then(msg => {
-        alert("Ekleme başarılı: " + msg);
-        location.reload();
+        alert("Ekleme başarılı!");
+        listele(); // Verileri yeniden yükle
       })
       .catch(err => {
         console.error("Ekleme hatası:", err);
         alert("Veri eklenemedi.");
       });
     }
+
+    // Sayfa yüklendiğinde otomatik listele
+    window.onload = listele;
   </script>
 </body>
 </html>
