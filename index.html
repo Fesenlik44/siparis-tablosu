@@ -2,13 +2,13 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <title>Google Sheets Veri Yönetimi</title>
+  <title>Google Sheets Sipariş Tablosu</title>
 </head>
 <body>
-  <h1>Google Sheets Tablom</h1>
+  <h1>📋 Sipariş Listesi</h1>
   <div id="liste"></div>
 
-  <h2>Yeni Veri Ekle</h2>
+  <h2>➕ Yeni Sipariş Ekle</h2>
   <input type="text" id="isim" placeholder="İsim">
   <input type="text" id="email" placeholder="E-posta">
   <button onclick="veriEkle()">Ekle</button>
@@ -21,17 +21,32 @@
       .then(res => res.json())
       .then(data => {
         const liste = document.getElementById('liste');
-        data.forEach(row => {
+        if (data.length === 0) {
+          liste.innerHTML = "<p>Veri bulunamadı.</p>";
+          return;
+        }
+
+        // İlk satırı başlık olarak atla (isteğe bağlı)
+        data.slice(1).forEach(row => {
           const satir = document.createElement('p');
           satir.textContent = row.join(" | ");
           liste.appendChild(satir);
         });
+      })
+      .catch(err => {
+        console.error("Hata:", err);
+        document.getElementById('liste').innerHTML = "<p>Veri alınamadı.</p>";
       });
 
-    // Veri ekle
+    // Yeni veri ekle
     function veriEkle() {
       const isim = document.getElementById('isim').value;
       const email = document.getElementById('email').value;
+
+      if (!isim || !email) {
+        alert("Lütfen tüm alanları doldurun.");
+        return;
+      }
 
       fetch(sheetURL, {
         method: 'POST',
@@ -41,7 +56,11 @@
       .then(res => res.text())
       .then(msg => {
         alert("Ekleme başarılı: " + msg);
-        location.reload(); // sayfayı yenile
+        location.reload();
+      })
+      .catch(err => {
+        console.error("Ekleme hatası:", err);
+        alert("Veri eklenemedi.");
       });
     }
   </script>
