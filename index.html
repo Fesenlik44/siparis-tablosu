@@ -14,7 +14,8 @@
   <button onclick="veriEkle()">Ekle</button>
 
   <script>
-    const sheetURL = "https://script.google.com/macros/s/AKfycbzT8U5MHI9eTEPHQ1DDhXUlwDToj3WObde_Z2eWRnt1/dev";
+    // Doğrudan çalışan CORS uyumlu URL
+    const sheetURL = "https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLi6RuSFvs2Dp9226h3xvmvcwVzgc_y3PvHKkQedfnx1d9upqSLHKgC-SZ6LNFn0JMH1XeCTGu2N_L0g6YwC-Wn_wg-YR-cfzAl-Lru8fzSMzesf2Jew9K2r14OcbhPvXyW34Okh6EhKyXFs6xUjMvL6iJzBAxfCqIGKxwl1lQtLt1E-trQqjsH93SyUyTTncmjMNmMcWZpACF9q8oMTE-U--Tz8kKc9dxypc-6SbBl0t_e5-CIqfLFw1F7zxQ&lib=MQdXRmybjNn85eiRHlLTQcQEa5a_kG2hH";
 
     // Verileri listele
     fetch(sheetURL)
@@ -26,7 +27,6 @@
           return;
         }
 
-        // İlk satırı başlık olarak atla (isteğe bağlı)
         data.slice(1).forEach(row => {
           const satir = document.createElement('p');
           satir.textContent = row.join(" | ");
