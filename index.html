@@ -18,38 +18,38 @@
   </table>
 
   <script>
-    const proxy = "https://corsproxy.io/?";
-    const url = "https://script.google.com/macros/s/AKfycbzT8U5MHI9eTEPHQ1DDhXUlwDToj3WObde_Z2eWRnt1/dev";
+const proxy = "https://api.allorigins.win/raw?url=";
+const url = "https://script.google.com/macros/s/AKfycbzT8U5MHI9eTEPHQ1DDhXUlwDToj3WObde_Z2eWRnt1/dev";
 
-    fetch(proxy + encodeURIComponent(url))
-      .then(res => res.json())
-      .then(data => {
-        const thead = document.querySelector("#veriTablosu thead");
-        const tbody = document.querySelector("#veriTablosu tbody");
+fetch(proxy + encodeURIComponent(url))
+  .then(res => res.json())
+  .then(data => {
+    const thead = document.querySelector("#veriTablosu thead");
+    const tbody = document.querySelector("#veriTablosu tbody");
 
-        const basliklar = Object.keys(data[0]);
-        const baslikSatiri = document.createElement("tr");
-        basliklar.forEach(b => {
-          const th = document.createElement("th");
-          th.textContent = b;
-          baslikSatiri.appendChild(th);
-        });
-        thead.appendChild(baslikSatiri);
+    const basliklar = Object.keys(data[0]);
+    const baslikSatiri = document.createElement("tr");
+    basliklar.forEach(b => {
+      const th = document.createElement("th");
+      th.textContent = b;
+      baslikSatiri.appendChild(th);
+    });
+    thead.appendChild(baslikSatiri);
 
-        data.forEach(kayit => {
-          const tr = document.createElement("tr");
-          basliklar.forEach(b => {
-            const td = document.createElement("td");
-            td.textContent = kayit[b];
-            tr.appendChild(td);
-          });
-          tbody.appendChild(tr);
-        });
-      })
-      .catch(err => {
-        document.body.innerHTML = "<p>Veri alınamadı 😕</p>";
-        console.error(err);
+    data.forEach(kayit => {
+      const tr = document.createElement("tr");
+      basliklar.forEach(b => {
+        const td = document.createElement("td");
+        td.textContent = kayit[b];
+        tr.appendChild(td);
       });
+      tbody.appendChild(tr);
+    });
+  })
+  .catch(err => {
+    document.body.innerHTML = "<p>Veri alınamadı 😕</p>";
+    console.error(err);
+  });
   </script>
 </body>
 </html>
